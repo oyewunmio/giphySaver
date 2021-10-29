@@ -1,19 +1,25 @@
 # import modules
-from bs4 import BeautifulSoup as bs
-import requests
-import os
-from tqdm import tqdm
-from urllib.parse import urljoin, urlparse
-from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.options import Options
-from fake_useragent import UserAgent
-# from user_agent import random_header
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.by import By
-from time import sleep
+try:
+    from bs4 import BeautifulSoup as bs
+    import requests
+    import os
+    from tqdm import tqdm
+    from urllib.parse import urljoin, urlparse
+    from selenium import webdriver
+    from webdriver_manager.chrome import ChromeDriverManager
+    from selenium.webdriver.chrome.options import Options
+    from fake_useragent import UserAgent
+    from selenium.webdriver.support.ui import WebDriverWait
+    from selenium.webdriver.support import expected_conditions as EC
+    from selenium.common.exceptions import NoSuchElementException
+    from selenium.webdriver.common.by import By
+    from time import sleep
+except ModuleNotFoundError:
+    print('Some required libraries have not been installed')
+    print('installing missing modules')
+    import subprocess
+    subprocess.run(['pip', 'install', '-r', 'requirement.txt'])
+
 
 # web driver configuration
 chrome_options = Options()
@@ -119,9 +125,7 @@ def main(email, password, path):
         print(e)
 
 
-email = "oluwaseyioyewunmi19@gmail.com"
-password = "whatsapp19"
-path = "giphy-images"
+
 email = input('Enter your user email')
 password = input('Enter your password')
 path = input('Enter the name of the folder to store the downloaded images to')
