@@ -1,3 +1,9 @@
+https://img.shields.io/badge/Tools-selenium-informational?style=flat&logo=python&logoColor=white&color=2bbc8a)
+https://img.shields.io/badge/Tools-requests-informational?style=flat&logo=python&logoColor=white&color=2bbc8a)
+https://img.shields.io/badge/Tools-BeautifulSoup-informational?style=flat&logo=python&logoColor=white&color=2bbc8a)
+https://img.shields.io/badge/Code-Python-informational?style=flat&logo=python&logoColor=white&color=2bbc8a)
+
+
 ###################Install requirements######################
 
 Use the below command to install the required python modules
