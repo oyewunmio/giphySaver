@@ -3,6 +3,9 @@
 ![](https://img.shields.io/badge/Tools-BeautifulSoup-informational?style=flat&logo=python&logoColor=white&color=2bbc8a)
 ![](https://img.shields.io/badge/Code-Python-informational?style=flat&logo=python&logoColor=white&color=2bbc8a)
 
+SCRIPT INFO
+Script logins user to the giphy websites and scrapes and downloads all gifs in the user favourites 
+
 
 REQUIREMENTS
 
