@@ -54,7 +54,7 @@ def login_user(email, password):
     try:
         logout_button = driver.find_element(By.XPATH, '//a[text()="Log Out"]')
         print('Successfully logged in')
-        driver.save_screenshot('login_screenshot.png')
+        #driver.save_screenshot('login_screenshot.png')
 
     except Exception as e:
         print('Incorrect login/password')
@@ -67,7 +67,7 @@ def get_all_images():
 
     driver.get('https://giphy.com/favorites')
     sleep(4)
-    driver.save_screenshot('favorites_screenshot.png')
+    #driver.save_screenshot('favorites_screenshot.png')
     print('Downloading all images')
     gifs = driver.find_elements(By.XPATH, '//img[@class="giphy-gif-img giphy-img-loaded"]')
     sleep(1)
@@ -116,6 +116,7 @@ def main(email, password, path):
     Main function to start scripts
     """
     try:
+        print('Attempting Login')
         login_user(email, password)
         images = get_all_images()
         for img in images:
@@ -126,8 +127,9 @@ def main(email, password, path):
 
 
 
-email = input('Enter your user email')
-password = input('Enter your password')
-path = input('Enter the name of the folder to store the downloaded images to')
+email = input('Enter your user email\t')
+password = input('Enter your password\t')
+path = input('Enter the name of the folder to store the downloaded images to\t')
 
+# calling main function
 main(email, password, path)
