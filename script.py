@@ -97,7 +97,7 @@ def download(url, pathname):
     file_size = int(response.headers.get("Content-Length", 0))
 
     # get the file name
-    filename = os.path.join(pathname, url.split("/")[-1])
+    filename = os.path.join(pathname, url.split("/")[-2] + '.gif')
 
     # progress bar, changing the unit to bytes instead of iteration (default by tqdm)
     progress = tqdm(response.iter_content(1024), f"Downloading {filename}", total=file_size, unit="B", unit_scale=True, unit_divisor=1024)
@@ -120,6 +120,7 @@ def main(email, password, path):
         login_user(email, password)
         images = get_all_images()
         for img in images:
+            print(img)
             # for each image, download it and store to path
             download(img, path)
     except Exception as e:
