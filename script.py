@@ -120,7 +120,6 @@ def main(email, password, path):
         login_user(email, password)
         images = get_all_images()
         for img in images:
-            print(img)
             # for each image, download it and store to path
             download(img, path)
     except Exception as e:
