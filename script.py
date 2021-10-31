@@ -1,24 +1,21 @@
 # import modules
-try:
-    from bs4 import BeautifulSoup as bs
-    import requests
-    import os
-    from tqdm import tqdm
-    from urllib.parse import urljoin, urlparse
-    from selenium import webdriver
-    from webdriver_manager.chrome import ChromeDriverManager
-    from selenium.webdriver.chrome.options import Options
-    from fake_useragent import UserAgent
-    from selenium.webdriver.support.ui import WebDriverWait
-    from selenium.webdriver.support import expected_conditions as EC
-    from selenium.common.exceptions import NoSuchElementException
-    from selenium.webdriver.common.by import By
-    from time import sleep
-except ModuleNotFoundError:
-    print('Some required libraries have not been installed')
-    print('installing missing modules')
-    import subprocess
-    subprocess.run(['pip', 'install', '-r', 'requirement.txt'])
+from bs4 import BeautifulSoup as bs
+import requests
+import os
+from tqdm import tqdm
+from urllib.parse import urljoin, urlparse
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver import ActionChains
+from fake_useragent import UserAgent
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
+from time import sleep
+# from selenium.webdriver.common.keys import Keys
+
 
 
 # web driver configuration
@@ -29,7 +26,7 @@ chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
 prefs = {"profile.managed_default_content_settings.images": 2}
 chrome_options.add_experimental_option("prefs", prefs)
-ua = UserAgent()
+ua = UserAgent(use_cache_server=False)
 userAgent = ua.random
 chrome_options.add_argument(f'user-agent={userAgent}')
 driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
@@ -66,21 +63,41 @@ def get_all_images():
     """
 
     driver.get('https://giphy.com/favorites')
-    sleep(4)
-    #driver.save_screenshot('favorites_screenshot.png')
-    print('Downloading all images')
-    gifs = driver.find_elements(By.XPATH, '//img[@class="giphy-gif-img giphy-img-loaded"]')
+    sleep(5)
+    driver.save_screenshot('screenshot1.png')
+    sleep(5)
+
+    scroll_pause_time = 3 # You can set your own pause time. My laptop is a bit slow so I use 1 sec
+    screen_height = driver.execute_script("return window.screen.height;")   # get the screen height of the web
+    i = 1
+    
+    while True:
+        # scroll one screen height each time
+        driver.execute_script("window.scrollTo(0, {screen_height}*{i});".format(screen_height=screen_height, i=i))
+        driver.save_screenshot('screenshot2.png')
+        i += 1
+        sleep(scroll_pause_time)
+        # update scroll height each time after scrolled, as the scroll height can change after we scrolled the page
+        scroll_height = driver.execute_script("return document.body.scrollHeight;")  
+        # Break the loop when the height we need to scroll to is larger than the total scroll height
+        if (screen_height) * i > scroll_height:
+            break
+
+    sleep(5)
+    gifs = driver.find_elements(By.XPATH, '//source[@type="image/webp"]')
     sleep(1)
+
+    print(f'Downloading {len(gifs)} gifs')
 
     giphys_list = []
     for s in range(len(gifs)):
         try:
-            # removing all text after the ? in the image src link
-            postion_question_mark = gifs[s].get_attribute('src').index("?") 
-            giphys_list.append(gifs[s].get_attribute('src')[:postion_question_mark])
+            postion_question_mark = gifs[s].get_attribute('srcset').index("?") 
+            giphys_list.append(gifs[s].get_attribute('srcset')[:postion_question_mark])
         except ValueError:
             pass    
     return giphys_list
+
 
 def download(url, pathname):
     """
@@ -110,7 +127,6 @@ def download(url, pathname):
             progress.update(len(data))
 
 
-
 def main(email, password, path):
     """
     Main function to start scripts
@@ -122,6 +138,7 @@ def main(email, password, path):
         for img in images:
             # for each image, download it and store to path
             download(img, path)
+            pass
     except Exception as e:
         print(e)
 
@@ -130,6 +147,7 @@ def main(email, password, path):
 email = input('Enter your user email\t')
 password = input('Enter your password\t')
 path = input('Enter the name of the folder to store the downloaded images to\t')
+
 
 # calling main function
 main(email, password, path)
