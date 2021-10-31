@@ -139,7 +139,9 @@ def main(email, password, path):
         for img in images:
             # for each image, download it and store to path
             download(img, path)
-            pass
+        
+        print('Closing Script driver')
+        driver.close()
     except Exception as e:
         print(e)
 
