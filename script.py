@@ -55,6 +55,7 @@ def login_user(email, password):
 
     except Exception as e:
         print('Incorrect login/password')
+        quit()
 
 
 def get_all_images():
